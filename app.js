@@ -6,11 +6,15 @@ const Gameboard = (() => {
 
     gameboard.forEach((square, index) => {
       //create div, add content to div
-      boardHTML += `<div class="square" id=square-${index}">${square}</div>`
+      boardHTML += `<div class="square" id="square-${index}">${square}</div>`
     })
     document.querySelector('#gameboard').innerHTML = boardHTML;
+    const squares = document.querySelectorAll('.square');
+    squares.forEach((square) => {
+      square.addEventListener('click', Game.handleClick);
+    })
   }
-
+  //this return exposes start to the outside world
   return {
     render,
   }
@@ -37,8 +41,15 @@ const Game = (() => {
     gameOver = false;
     Gameboard.render();
   }
+
+  const handleClick = (e) => {
+    let index = parseInt(e.target.id.split('-')[1]);
+    //console.log(typeof(index))
+  }
+  //this exposes start to the outside world
   return {
     start,
+    handleClick
   }
 })();
 
