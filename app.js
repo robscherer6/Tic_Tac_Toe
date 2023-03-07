@@ -14,9 +14,20 @@ const Gameboard = (() => {
       square.addEventListener('click', Game.handleClick);
     })
   }
+
+  const update = (index, value) => {
+    gameboard[index] = value;
+    render();
+  };
+
+  //returns the gameboard (array) indirectly so we cannot modify it
+  const getGameBoard = () => gameboard;
+
   //this return exposes start to the outside world
   return {
     render,
+    update,
+    getGameBoard
   }
 })();
 
@@ -40,12 +51,24 @@ const Game = (() => {
     currentPlayerIndex = 0;
     gameOver = false;
     Gameboard.render();
+    const squares = document.querySelectorAll('.square');
+    squares.forEach((square) => {
+      square.addEventListener('click', handleClick);
+    })
   }
 
   const handleClick = (e) => {
     let index = parseInt(e.target.id.split('-')[1]);
     //console.log(typeof(index))
+    if(Gameboard.getGameBoard()[index] !== "")
+    return;
+
+    Gameboard.update(index, players[currentPlayerIndex].symbol)
+    //changes index of current player to opposite symbol
+    currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
+
   }
+
   //this exposes start to the outside world
   return {
     start,
@@ -58,3 +81,5 @@ const startButton = document.querySelector('#startButton');
 startButton.addEventListener('click', () => {
   Game.start();
 })
+
+
