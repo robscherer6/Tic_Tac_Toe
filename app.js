@@ -15,6 +15,13 @@ const Gameboard = (() => {
     })
   }
 
+  const restart = () => {
+    for (let i = 0; i < 9; i++) {
+      Gameboard.update(i, '');
+    }
+    render();
+  }
+
   const update = (index, value) => {
     gameboard[index] = value;
     render();
@@ -23,11 +30,12 @@ const Gameboard = (() => {
   //returns the gameboard (array) indirectly so we cannot modify it
   const getGameBoard = () => gameboard;
 
-  //this return exposes start to the outside world
+  //this return exposes functions to the outside world
   return {
     render,
     update,
-    getGameBoard
+    getGameBoard,
+    restart
   }
 })();
 
@@ -80,6 +88,12 @@ const Game = (() => {
 const startButton = document.querySelector('#startButton');
 startButton.addEventListener('click', () => {
   Game.start();
+})
+
+const restartButton = document.querySelector('#restartButton');
+restartButton.addEventListener('click', () => {
+  //console.log('clicked')
+  Gameboard.restart();
 })
 
 
